@@ -126,7 +126,7 @@
                 const card = document.createElement('div'); card.className = "card";
                 card.innerHTML = `<div class="fav-area" onclick="toggleFav(event,'${g.name}')"><span class="fav-btn ${favs.includes(g.name)?'active':''}">❤</span></div>${g.name.replace('.html','').toUpperCase()}`;
                 card.onclick = () => {
-                    const url = `https://raw.githack.com/bob154526-hue/Mongle/main/${g.name}`;
+                    const url = `https://github.com/sqsqs353-alt/the-mongle-thing/edit/main/${g.name}`;
                     if(cfg.mode==='blank') {
                         activeGameWindow = window.open('about:blank');
                         activeGameWindow.document.body.innerHTML = `<style>body,html{margin:0;padding:0;height:100vh;width:100vw;overflow:hidden;background:#000}iframe{width:100vw;height:100vh;border:none}</style><iframe src="${url}" allowfullscreen></iframe>`;
