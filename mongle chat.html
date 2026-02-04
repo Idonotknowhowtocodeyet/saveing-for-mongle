@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONGLE_PRIVATE_LINK // NEON_GRN</title>
+    <style>
+        :root { --neon: #39ff14; --bg: #050505; --dark-neon: #1a5c0a; --admin: #ff0000; }
+        
+        /* CRT SCANLINE EFFECT */
+        body::before {
+            content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9999; background-size: 100% 3px, 6px 100%; pointer-events: none;
+        }
+
+        body { 
+            background: var(--bg); color: var(--neon); 
+            font-family: 'Courier New', monospace; margin: 0; height: 100vh;
+            display: flex; flex-direction: column; overflow: hidden;
+            text-transform: uppercase; font-weight: bold;
+        }
+
+        /* SECRET ADMIN CORNER */
+        #admin-trigger {
+            position: fixed; top: 0; right: 0; width: 30px; height: 30px;
+            background: var(--admin); z-index: 10000; cursor: pointer;
+            clip-path: polygon(100% 0, 0 0, 100% 100%); opacity: 0.2;
+        }
+        #admin-trigger:hover { opacity: 1; box-shadow: 0 0 20px var(--admin); }
+
+        /* HEADER */
+        header { 
+            border-bottom: 4px solid var(--neon); padding: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg); box-shadow: 0 5px 15px rgba(57, 255, 20, 0.2);
+        }
+
+        /* LAYOUT */
+        #container { display: flex; flex: 1; overflow: hidden; }
+
+        #sidebar { 
+            width: 260px; border-right: 4px solid var(--neon); 
+            padding: 20px; display: flex; flex-direction: column; gap: 10px;
+        }
+
+        #chat-main { flex: 1; display: flex; flex-direction: column; position: relative; }
+
+        /* MESSAGE AREA */
+        #messages { 
+            flex: 1; overflow-y: scroll; padding: 20px; 
+            display: flex; flex-direction: column; gap: 10px;
+        }
+
+        .msg { 
+            border: 2px solid var(--neon); padding: 12px; background: #000;
+            box-shadow: 6px 6px 0px var(--neon); margin-bottom: 10px; align-self: flex-start; max-width: 80%;
+        }
+        .msg.mine { align-self: flex-end; box-shadow: -6px 6px 0px var(--neon); border-color: #fff; color: #fff; }
+        .msg-meta { font-size: 0.7rem; color: var(--dark-neon); margin-bottom: 5px; }
+
+        /* INPUTS */
+        .input-bar { 
+            border-top: 4px solid var(--neon); padding: 20px; 
+            display: grid; grid-template-columns: 150px 1fr 120px; gap: 15px; background: #000;
+        }
+
+        input { 
+            background: #000; border: 2px solid var(--neon); color: var(--neon); 
+            padding: 10px; outline: none; font-family: inherit; font-weight: bold;
+        }
+        input::placeholder { color: var(--dark-neon); }
+        
+        button { 
+            background: var(--neon); color: #000; border: none; 
+            font-weight: 900; cursor: pointer; transition: 0.1s;
+        }
+        button:active { transform: translate(2px, 2px); box-shadow: none; }
+        button:hover { background: #fff; }
+
+        .room-tag { padding: 8px; border: 1px solid var(--neon); cursor: pointer; font-size: 0.8rem; }
+        .room-tag:hover { background: var(--dark-neon); color: white; }
+
+        #admin-panel { display: none; background: var(--admin); color: #fff; padding: 5px; text-align: center; }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--neon); border: 2px solid #000; }
+    </style>
+</head>
+<body>
+
+<div id="admin-trigger" onclick="openAdmin()"></div>
+
+<header>
+    <div>MONGLE_ARCADE // <span id="room-display">LOBBY</span></div>
+    <div id="status" style="font-size: 0.7rem;">STATUS: ENCRYPTED_ONLINE</div>
+</header>
+
+<div id="admin-panel">
+    ROOT_ACCESS_GRANTED | <button onclick="wipeRoom()" style="background:white; color:red; padding:2px 10px;">PURGE_DATA</button>
+</div>
+
+<div id="container">
+    <div id="sidebar">
+        <div style="border-bottom: 2px solid var(--neon); margin-bottom: 10px;">PUBLIC_NODES</div>
+        <div id="room-list" style="display:flex; flex-direction:column; gap:5px;"></div>
+        
+        <div style="margin-top: auto; border-top: 2px solid var(--neon); padding-top: 10px;">PRIVATE_LINK</div>
+        <input type="text" id="privRoomInput" placeholder="SECRET_ID...">
+        <button onclick="joinRoom(document.getElementById('privRoomInput').value)">CONNECT</button>
+    </div>
+
+    <div id="chat-main">
+        <div id="messages"></div>
+
+        <div class="input-bar">
+            <input type="text" id="username" placeholder="USER_ID">
+            <input type="text" id="messageInput" placeholder="TYPE_DATA_PACKET...">
+            <button id="sendBtn">EXECUTE</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, onValue, remove, off } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgRvxKypPsOx379SNleE6Uij7mKkEJxGY",
+    authDomain: "monglearcade.firebaseapp.com",
+    databaseURL: "https://monglearcade-default-rtdb.firebaseio.com",
+    projectId: "monglearcade",
+    storageBucket: "monglearcade.firebasestorage.app",
+    messagingSenderId: "637983149122",
+    appId: "1:637983149122:web:e6969750929fbb6b1871db"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  
+  let currentRoom = "LOBBY";
+  let chatRef = ref(db, 'rooms/' + currentRoom + '/messages');
+
+  // --- Load Public Rooms (Sidebar) ---
+  onValue(ref(db, 'rooms'), (snapshot) => {
+    const list = document.getElementById('room-list');
+    list.innerHTML = "";
+    snapshot.forEach((child) => {
+      // Only show rooms that aren't marked as 'private' in your head
+      const roomName = child.key;
+      const el = document.createElement('div');
+      el.className = "room-tag";
+      el.innerText = "> " + roomName;
+      el.onclick = () => joinRoom(roomName);
+      list.appendChild(el);
+    });
+  });
+
+  // --- Join Room Logic ---
+  window.joinRoom = (name) => {
+    if (!name || name === currentRoom) return;
+    off(chatRef);
+    currentRoom = name.toUpperCase().replace(/\s/g, '_');
+    document.getElementById('room-display').innerText = currentRoom;
+    document.getElementById('messages').innerHTML = `<div class="msg">SYSTEM: SYNCED TO [${currentRoom}]</div>`;
+    chatRef = ref(db, 'rooms/' + currentRoom + '/messages');
+    initListener();
+  };
+
+  // --- Messaging ---
+  const send = () => {
+    const text = document.getElementById('messageInput').value;
+    const user = document.getElementById('username').value || "ANON";
+    if (text.trim()) {
+      push(chatRef, { user: user.toUpperCase(), text, time: new Date().toLocaleTimeString() });
+      document.getElementById('messageInput').value = "";
+    }
+  };
+
+  document.getElementById('sendBtn').onclick = send;
+  document.getElementById('messageInput').onkeypress = (e) => { if(e.key==='Enter') send(); };
+
+  function initListener() {
+    onChildAdded(chatRef, (snap) => {
+      const d = snap.val();
+      const area = document.getElementById('messages');
+      const isMe = d.user === (document.getElementById('username').value || "ANON").toUpperCase();
+      area.innerHTML += `
+        <div class="msg ${isMe ? 'mine' : ''}">
+            <div class="msg-meta">${d.user} // ${d.time}</div>
+            <div>${d.text}</div>
+        </div>`;
+      area.scrollTop = area.scrollHeight;
+    });
+  }
+
+  // --- Admin ---
+  window.openAdmin = () => {
+    if(prompt("ENTER_ROOT_KEY:") === "mongle123") {
+      document.getElementById('admin-panel').style.display = 'block';
+    }
+  };
+  window.wipeRoom = () => {
+    if(confirm("PERMANENT_WIPE?")) remove(ref(db, 'rooms/' + currentRoom));
+  };
+
+  initListener();
+</script>
+</body>
+</html>
