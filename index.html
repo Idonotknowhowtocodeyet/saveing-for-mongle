@@ -103,7 +103,7 @@
             document.getElementById('lockdown').style.display="none"; 
             document.getElementById('loginOverlay').style.display="none"; 
             document.getElementById('app').style.display="flex";
-            const res = await fetch('https://api.github.com/repos/bob154526-hue/Mongle/contents/');
+            const res = await fetch('https://https://api.github.com');
             const data = await res.json();
             gameData = data.filter(f => f.name.endsWith('.html') && f.name !== 'index.html');
             renderGrid();
