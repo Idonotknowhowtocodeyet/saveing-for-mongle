@@ -1,30 +1,26 @@
-<div id="status" style="color: #0f0; font-family: monospace; background: #000; padding: 10px;">
-    SYSTEM: READY_TO_RISE
-</div>
-
 <script>
-// 1. THE RAFT (Proxy/Game data)
-// Replace with your proxy or game link
-const pUrl = "https://204.12.217.138.worldplus-intl.org/";
-const pData = `<html><body style="margin:0"><iframe src="${pUrl}" style="width:100%;height:100vh;border:none"></iframe></body></html>`;
-const raft = URL.createObjectURL(new Blob([pData], {type: 'text/html'}));
-
 function executeRise() {
-    // 2. THE SYNC-LAUNCH
-    // We open the unblocked raft in a new "System" tab first
-    let ghost = window.open('about:blank', '_blank');
-    ghost.document.write(`<iframe src="${raft}" style="width:100%;height:100vh;border:none"></iframe>`);
-    
-    // 3. THE SACRIFICE
-    // We immediately turn the current Mogle tab into a "Blocked" page.
-    // This satisfies the filter: it thinks it "caught" you on this tab.
-    document.getElementById('status').innerHTML = "STATUS: SACRIFICING_TAB...";
-    setTimeout(() => {
-        window.location.href = "https://www.proxysite.com/#force_block";
-    }, 100);
+    // 1. Prepare the game in memory (The Blob)
+    const pUrl = "https://204.12.217.138.worldplus-intl.org/"; 
+    const pHTML = `<html><body style="margin:0"><iframe src="${pUrl}" style="width:100%;height:100vh;border:none"></iframe></body></html>`;
+    const raft = URL.createObjectURL(new Blob([pHTML], {type: 'text/html'}));
+
+    // 2. Setting the "Shield"
+    // This is what triggers the "Leave site?" popup.
+    window.onbeforeunload = function() {
+        // TRICK: While the browser is showing you the "Leave?" box,
+        // it pauses the extension's redirect. We use this pause to launch!
+        window.open(raft, '_blank'); 
+        return "SYSTEM_SYNC_REBOUNDING...";
+    };
+
+    // 3. Trigger the Block
+    // We send this tab to a blocked URL. 
+    // This tab IS going to get blocked, but it's just bait.
+    window.location.href = "https://www.proxysite.com";
 }
 </script>
 
-<button onclick="executeRise()" style="background:#222; color:#0f0; border:1px solid #0f0; padding:15px; cursor:pointer;">
-    EXECUTE_REBOUND_SYNC
+<button onclick="executeRise()" style="padding:20px; background:black; color:red; border:2px solid red; font-family:monospace; cursor:pointer;">
+    [ TRIGGER_GHOST_SHIFT ]
 </button>
