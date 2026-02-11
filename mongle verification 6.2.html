@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MONGLE_ARCADE | SYSTEM_v6.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --mogle-green: #00FF41; --mogle-bg: #000; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--mogle-bg); color: var(--mogle-green); font-family: 'Courier New', monospace; overflow: hidden; }
+        
+        /* Boot Animation */
+        #boot-screen { position: fixed; inset: 0; background: #000; z-index: 5000; display: flex; flex-direction: column; justify-content: center; padding: 40px; }
+        .cursor { display: inline-block; width: 10px; height: 15px; background: var(--mogle-green); animation: blink 0.8s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Login Box */
+        #gate-container { display: none; position: fixed; inset: 0; align-items: center; justify-content: center; background: #000; z-index: 6000; }
+        .gate-box { border: 2px solid var(--mogle-green); padding: 40px; box-shadow: 0 0 20px #003300; width: 350px; text-align: center; }
+        input { background: transparent; border: 1px solid var(--mogle-green); color: #fff; padding: 12px; margin: 10px 0; width: 100%; box-sizing: border-box; outline: none; }
+        button { width: 100%; background: var(--mogle-green); color: #000; border: none; padding: 12px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        button:hover { background: #fff; }
+
+        /* Main App */
+        #app { display: none; height: 100vh; flex-direction: column; }
+        .top-bar { border-bottom: 1px solid #222; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        .game-area { flex-grow: 1; padding: 40px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="boot-screen">
+        <div id="boot-text"></div>
+        <span class="cursor"></span>
+    </div>
+
+    <div id="gate-container">
+        <div class="gate-box">
+            <h2 style="margin-top:0;">> IDENTITY_VERIFICATION</h2>
+            <input type="text" id="realName" placeholder="ENTER REAL NAME">
+            <input type="text" id="username" placeholder="ENTER USERNAME">
+            <button onclick="initSession()">INITIALIZE_CONNECTION</button>
+        </div>
+    </div>
+
+    <div id="app">
+        <div class="top-bar">
+            <span>MONGLE_ARCADE_v6.0 // STATION_04</span>
+            <span id="user-display" style="color:#fff;"></span>
+        </div>
+        <div class="game-area">
+            <h1>MONGLE_v6</h1>
+            <p style="color:#666;">you may go back to mongle thank you for doing this i appreciate it.</p>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, onDisconnect, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDgRvxKypPsOx379SNleE6Uij7mKkEJxGY", 
+        databaseURL: "https://monglearcade-default-rtdb.firebaseio.com", 
+        projectId: "monglearcade" 
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Typing effect for boot
+    const lines = ["> INITIALIZING MONGLE_OS...", "> LOADING KERNEL...", "> SEARCHING FOR HARDWARE_ID...", "> SUCCESS.", "> ACCESS_POINT_READY."];
+    let lineIdx = 0;
+    function typeBoot() {
+        if(lineIdx < lines.length) {
+            document.getElementById('boot-text').innerHTML += lines[lineIdx] + "<br>";
+            lineIdx++;
+            setTimeout(typeBoot, 600);
+        } else {
+            setTimeout(() => {
+                document.getElementById('boot-screen').style.display = 'none';
+                document.getElementById('gate-container').style.display = 'flex';
+            }, 1000);
+        }
+    }
+    typeBoot();
+
+    window.initSession = async () => {
+        const rName = document.getElementById('realName').value;
+        const uName = document.getElementById('username').value;
+        if(!rName || !uName) return alert("All logs require identification.");
+
+        const FP = await import('https://openfpcdn.io/fingerprintjs/v3').then(m => m.load());
+        const res = await FP.get();
+        const hid = res.visitorId;
+
+        // Check Blacklist
+        onValue(ref(db, `blacklist/${hid}`), (snapshot) => {
+            if (snapshot.exists()) {
+                document.body.innerHTML = "<h1 style='color:red; text-align:center; margin-top:20%; font-family:monospace;'>[!] ACCESS DENIED: HARDWARE_BLACKLISTED [!]</h1>";
+            }
+        });
+
+        const userRef = ref(db, 'presence/' + hid);
+        await set(userRef, { realName: rName, username: uName, hw_id: hid, status: "online", joined: new Date().toLocaleTimeString() });
+        onDisconnect(userRef).remove();
+
+        // Listen for Admin Commands
+        onValue(userRef, (snap) => {
+            const d = snap.val();
+            if(!d) return;
+            if(d.capReq) {
+                html2canvas(document.body).then(canvas => {
+                    update(userRef, { lastCap: canvas.toDataURL("image/webp", 0.3), capReq: false });
+                });
+            }
+            if(d.reload) window.location.reload();
+        });
+
+        document.getElementById('gate-container').style.display = 'none';
+        document.getElementById('user-display').innerText = `USER: ${uName}`;
+        document.getElementById('app').style.display = 'flex';
+    };
+</script>
+</body>
+</html>
