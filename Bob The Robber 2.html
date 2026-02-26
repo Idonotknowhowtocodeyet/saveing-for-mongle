@@ -5,21 +5,21 @@
   gtag('js', new Date());
 
   gtag('config', 'G-L7856P3VNT');
-</script><html>
-<head>
-	
+</script><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="https://cdn.jsdelivr.net/gh/WhoIsEv/relivedassets@main/bobtherobber2/">
     
     
-<meta charset="UTF-8">
-<title>Boxing Random</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-
-<meta name="generator" content="Scirra Construct">
-	<meta name="author" content="TwoPlayerGames">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxstyle.css" type="text/css">
-
-<style>
+    
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Bob The Robber 2</title>
+    <link rel="icon" href="./splash.jpeg" />
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css" />
+  <style>
 #sidebarad1,
 #sidebarad2 {
   position: fixed;
@@ -60,20 +60,45 @@
 }
 </style>
 </head>
-<body>
 
-	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxwasm.js"></script>
-	<noscript>
-		<div id="notSupportedWrap">
-			<h2 id="notSupportedTitle">This content requires JavaScript</h2>
-			<p class="notSupportedMessage">JavaScript appears to be disabled. Please enable it to view this content.</p>
-		</div>
-	</noscript>
-	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxcheck.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxclient.js" type="module"></script>
-	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxmain.js" type="module"></script>
-	<script src="https://cdn.jsdelivr.net/gh/bubbls/ruffle@25f6152ab54ec5409c832c904ed3e5e482600d6a/boxsw.js" type="module"></script>
-<div id="sidebarad1">
+  <body>
+    <div id="content"></div>
+    <div id="orientation"></div>
+    <div id="loader">Loading ...</div>
+
+    <script type="text/javascript">
+      var gameName = "bob-the-robber-2.min.f.js";
+
+      //This all here is for cache busting;
+      function addScript(src, buster, callback) {
+        var s = document.createElement("script");
+        s.setAttribute("src", src + "?v=" + buster);
+        if (typeof callback === "function") {
+          s.onload = callback;
+        }
+        document.body.appendChild(s);
+      }
+
+      window.addEventListener(
+        "touchmove",
+        function (event) {
+          event.preventDefault();
+        },
+        false
+      );
+      if (typeof window.devicePixelRatio != "undefined" && window.devicePixelRatio > 2) {
+        var meta = document.getElementById("viewport");
+        meta.setAttribute("content", "width=device-width, initial-scale=" + 2 / window.devicePixelRatio + ", user-scalable=no");
+      }
+
+      addScript("version.js", Date.now(), function () {
+        addScript(gameName, version, function () {
+          var game = new Game();
+        });
+      });
+    </script>
+    <script src="/js/main.js"></script>
+  <div id="sidebarad1">
   <div class="sidebar-close" onclick="this.parentElement.style.display='none'">✕</div>
 </div>
 <div id="sidebarad2">
