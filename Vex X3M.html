@@ -6,18 +6,23 @@
 
   gtag('config', 'G-L7856P3VNT');
 </script><!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <base href ="https://cdn.jsdelivr.net/gh/web-ports/fnac/2/">
-    <link rel="stylesheet" type="text/css" href="style.css"/>
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
+    
+    
+    
+    <base href="https://cdn.jsdelivr.net/gh/genizy/vex@1340a1189f16869133a4a42f11554b5d0ccc064b/x3m/">
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="HandheldFriendly" content="true" />
-    <title>Five Nights at Candy's 2</title>
+    <title>Vex X3M</title>
+    <link rel="icon" type="image/png" href="assets/icon.png">
+    <link rel="apple-touch-icon" type="image/png" href="assets/icon.png" />
+    <link rel="stylesheet" href="assets/css/app.css" type="text/css" />
+    <script src="azerion-libs.min.js" defer onload="loadGame()"></script>
 <style>
 #sidebarad1,
 #sidebarad2 {
@@ -61,21 +66,31 @@
 </head>
 
 <body>
-    <div style="display: inline-block; -webkit-user-select: none; text-align: left">
-        <canvas id="MMFCanvas" width="1280" height="720"> Your browser does not support Canvas, Please try again. </canvas>
+    <div id="content"> </div>
+    <div id="loader">
+        <div id="loaderR"></div>
     </div>
-    <div id="progress-container">
-        <div style="margin-bottom: 6px;">Downloading... <span id="download-text">0%</span></div>
-        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
-            <div id="download-bar" style="height: 10px; background: #3b82f6; width: 0%; transition: width 0.2s;"></div>
-        </div>
-        <div style="margin: 12px 0 6px;">Extracting... <span id="extract-text">0%</span></div>
-        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
-            <div id="extract-bar" style="height: 10px; background: #10b981; width: 0%; transition: width 0.2s;"></div>
-        </div>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="main.js"></script>
+    <div id="orientation"></div>
+    <script type="text/javascript">
+        var gameName = "vex-x3m.min.js";
+
+        function addScript(src, buster, callback) {
+            var s = document.createElement('script');
+            s.setAttribute('src', src);
+            if (typeof callback === 'function') {
+                s.onload = callback;
+            }
+            document.body.appendChild(s);
+        }
+
+        function loadGame() {
+            addScript('version.js', Date.now(), function() {
+                addScript(gameName, Date.now(), function() {
+                    new Game();
+                });
+            });
+        }
+    </script>
 <div id="sidebarad1">
   <div class="sidebar-close" onclick="this.parentElement.style.display='none'">✕</div>
 </div>
