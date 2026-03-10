@@ -3,19 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>House of Hazards Loader</title>
+    <title>House of Hazards </title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #000; }
-        iframe { border: none; width: 100%; height: 100%; }
-        #loading { color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: sans-serif; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden; 
+            background-color: #000; 
+        }
+        iframe { 
+            border: none; 
+            width: 100%; 
+            height: 100%; 
+        }
+        #status {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #444;
+            font-family: sans-serif;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loading">connecting to your MONGLE game pls wait this will take only like 5 secs or less</div>
+    <div id="status">ESTABLISHING SECURE CONNECTION...</div>
 
-    <iframe src="https://raw.githack.com/1000unblockedgames/HouseOfHazards/main/index.html" 
-            onload="document.getElementById('loading').style.display='none';"></iframe>
+    <iframe 
+        id="game-frame"
+        src="https://house-of-hazards.pages.dev/" 
+        allowfullscreen="true">
+    </iframe>
+
+    <script>
+        // Emergency backup: If the first link fails, it swaps to another Cloudflare mirror
+        const frame = document.getElementById('game-frame');
+        frame.onerror = function() {
+            frame.src = "https://hoh-unblocked.pages.dev/";
+        };
+    </script>
 
 </body>
 </html>
