@@ -1,56 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>System Test</title>
+    <title>math</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        iframe { width: 100vw; height: 100vh; border: none; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%;
+            overflow: hidden; 
+            background: #000; 
+        }
+        iframe { 
+            width: 100vw; 
+            height: 100vh; 
+            border: none; 
+        }
     </style>
 </head>
 <body>
 
-<script>
-    // Configuration
-    const targetUrl = "https://poxel.io"; 
-    const maxLoads = 10;
-    let count = 0;
-
-    // 1. Create the iframe element
-    const ifrm = document.createElement("iframe");
-    
-    // 2. Set the initial source to about:blank
-    ifrm.src = "about:blank";
-    document.body.appendChild(ifrm);
-
-    // 3. Logic to handle the 10-cycle load
-    ifrm.onload = function() {
-        // Skip the logic if we just loaded about:blank
-        if (ifrm.src === "about:blank") {
-            // Short delay before loading the actual game
-            setTimeout(() => {
-                ifrm.src = targetUrl;
-            }, 200);
-            return;
-        }
-
-        if (count < maxLoads) {
-            count++;
-            console.log("Iteration: " + count);
-            
-            // Immediately flip back to blank to trigger the next cycle
-            setTimeout(() => {
-                ifrm.src = "about:blank";
-            }, 500);
-        } else {
-            console.log("Test sequence finalized.");
-        }
-    };
-
-    // Initial trigger: Change the blank frame to the target
-    setTimeout(() => {
-        ifrm.src = targetUrl;
-    }, 500);
-</script>
+    <iframe src="https://poxel.io"></iframe>
 
 </body>
 </html>
