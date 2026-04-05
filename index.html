@@ -483,8 +483,9 @@
                 <button class="btn btn-dark" onclick="openMongleAboutBlank()">✖️ X</button>
                 <button class="btn btn-dark" onclick="toggleLB()" style="position:relative;">🏆 LB <span id="notifBubble"></span></button>
                 <button class="btn btn-dark" onclick="toggleAch()">🎖️ ACH</button>
-                <button id="adminBtn" class="btn btn-purple" style="display:none; border-color:var(--purple);" onclick="toggleModal('adminM')">⚡ OVERSEER</button>
-                <button id="mongleAdminBtn" class="btn" style="display:none; background:linear-gradient(45deg,#ff00ff,#00ffff); color:#000; font-weight:bold;" onclick="toggleModal('adminM'); setTimeout(toggleMonglePanel, 100);">👑 MONGLE</button>
+                <button id="adminBtn2" class="btn btn-purple" style="display:none; border-color:var(--purple);" onclick="toggleModal('adminM')">⚡ OVERSEER</button>
+                <button id="mongleAdminBtn2" class="btn" style="display:none; background:linear-gradient(45deg,#ff00ff,#00ffff); color:#000; font-weight:bold;" onclick="toggleModal('adminM'); setTimeout(toggleMonglePanel, 100);">👑 MONGLE</button>
+                <button class="btn btn-dark" onclick="startScreenShare()" title="Screen Share" style="color:#00cfff;border-color:#00cfff44;">📡</button>
                 <button class="btn btn-dark" onclick="toggleModal('settingsM')">⚙️</button>
                 <button class="btn btn-red" onclick="panicTrigger()">PANIC</button>
             </div>
@@ -555,22 +556,22 @@
     <!-- ADMIN MODAL -->
     <div id="adminM" class="modal" style="max-width:1500px;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1c1c1c; padding-bottom:10px; margin-bottom:14px;">
-            <div>
-                <h3 style="margin:0; color:var(--primary); letter-spacing:2px;">OVERSEER CONTROL DECK</h3>
-                <div class="muted" id="userCount">Users: 0</div>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <h3 style="margin:0; color:var(--primary); letter-spacing:2px;">⚡ OVERSEER</h3>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <span class="online-dot"></span>
+                    <span id="userCount" style="font-size:11px;color:#555;">0 users</span>
+                </div>
             </div>
             <div style="display:flex; gap:8px;">
                 <button id="mongleBtn" class="btn btn-purple" style="display:none;" onclick="toggleMonglePanel()">⚡ MONGLE</button>
-                <button class="btn btn-warn" onclick="globalReload()">🔄 RELOAD ALL</button>
-                <button class="btn btn-dark" onclick="toggleModal('adminM')">CLOSE</button>
+                <button class="btn btn-dark" onclick="toggleModal('adminM')">✕ CLOSE</button>
             </div>
         </div>
 
         <!-- MONGLE SUPERADMIN PANEL -->
         <div id="monglePanel" style="display:none; margin-bottom:16px; background:#030303; border:2px solid #a020f033; padding:16px; border-radius:6px;">
-            <h4 class="mongle-badge" style="margin-top:0; font-size: 16px; text-align: center;">⚡ MONGLE SUPERADMIN v8.0 ⚡</h4>
-
-            <!-- Stats -->
+            <h4 class="mongle-badge" style="margin-top:0; font-size: 16px; text-align: center;">⚡ MONGLE SUPERADMIN v12.0 ⚡</h4>
             <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px;">
                 <div class="stat-box"><div class="stat-value" id="statTotalUsers">0</div><div class="stat-label">ONLINE</div></div>
                 <div class="stat-box"><div class="stat-value" id="statBanned">0</div><div class="stat-label">BANNED</div></div>
@@ -578,17 +579,12 @@
                 <div class="stat-box"><div class="stat-value" id="statTotalPlays">0</div><div class="stat-label">TOTAL PLAYS</div></div>
                 <div class="stat-box"><div class="stat-value" id="statChatMsgs">0</div><div class="stat-label">CHAT MSGS</div></div>
             </div>
-
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;">
-                <!-- LEFT -->
                 <div>
                     <div class="mongle-section">
                         <h4>🏷️ GAME TAG MANAGER</h4>
-
-                        <!-- Built-in tags + custom tags on a game -->
                         <div class="muted" style="margin-bottom:6px;">Select a game to tag it</div>
                         <select id="tagGameSelect" class="input" style="margin:4px 0;"></select>
-
                         <div style="margin:8px 0 4px; font-size:10px; color:#555; letter-spacing:1px;">BUILT-IN TAGS</div>
                         <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;">
                             <label style="font-size:11px; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="tgPopular"> 🔥 Popular</label>
@@ -597,27 +593,22 @@
                             <label style="font-size:11px; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="tgNoLag"> ⚡ No-Lag</label>
                             <label style="font-size:11px; display:flex; align-items:center; gap:4px;"><input type="checkbox" id="tgNew"> ✨ New</label>
                         </div>
-
                         <div style="margin:8px 0 4px; font-size:10px; color:#555; letter-spacing:1px;">CUSTOM TAGS ON THIS GAME</div>
                         <div id="customTagCheckboxes" style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; min-height:20px;"></div>
-
                         <button class="btn" onclick="saveGameTags()" style="width:100%; margin-bottom:8px;">SAVE TAGS</button>
-
                         <hr style="border-color:#111; margin:10px 0;">
                         <div style="margin-bottom:6px; font-size:10px; color:#555; letter-spacing:1px;">CREATE NEW CUSTOM TAG</div>
                         <div style="display:flex; gap:6px; margin-bottom:6px;">
                             <input id="newTagEmoji" class="input" placeholder="🏷️" style="margin:0; width:48px; text-align:center; font-size:16px;">
-                            <input id="newTagName" class="input" placeholder="Tag name (e.g. scary)" style="margin:0; flex:1;">
+                            <input id="newTagName" class="input" placeholder="Tag name" style="margin:0; flex:1;">
                             <input id="newTagColor" type="color" value="#00ff41" style="width:36px; height:36px; border:none; background:none; cursor:pointer; padding:0;">
                         </div>
                         <button class="btn btn-blue" onclick="createCustomTag()" style="width:100%;">+ CREATE TAG</button>
-
                         <hr style="border-color:#111; margin:10px 0;">
                         <div style="margin-bottom:6px; font-size:10px; color:#555; letter-spacing:1px;">ALL CUSTOM TAGS</div>
                         <div id="customTagList" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
                         <div id="tagGameSelectorHelper" style="margin-top:8px;"></div>
                     </div>
-
                     <div class="mongle-section">
                         <h4>📊 GAME PLAY STATS</h4>
                         <div style="display:flex; gap:6px; margin-bottom:8px;">
@@ -626,7 +617,6 @@
                         </div>
                         <div id="gameStatsList" style="max-height:200px; overflow-y:auto; background:#000; border:1px solid #111; border-radius:4px;"></div>
                     </div>
-
                     <div class="mongle-section">
                         <h4>🚫 BAN MANAGEMENT</h4>
                         <input id="banComputerId" class="input" placeholder="Computer ID" style="margin:4px 0;">
@@ -637,77 +627,25 @@
                         </div>
                         <div id="banListContainer" class="ban-list" style="display:none;"></div>
                     </div>
-                </div>
 
-                <!-- CENTER -->
+                    <div class="mongle-section">
+                        <h4>📬 GAME REQUESTS</h4>
+                        <button class="btn btn-dark" onclick="loadGameRequests()" style="width:100%;margin-bottom:8px;font-size:10px;">🔄 LOAD REQUESTS</button>
+                        <div id="gameRequestsList" style="max-height:180px;overflow-y:auto;background:#000;border:1px solid #111;border-radius:4px;padding:6px;font-size:11px;color:#555;">Click load to see requests</div>
+                    </div>
+                </div>
                 <div>
                     <div class="mongle-section">
                         <h4>🎭 MEGA PRANK ARSENAL</h4>
-                        <div class="muted" style="margin-bottom:8px;">Select user in OVERSEER panel first</div>
-                        <div class="prank-grid">
+                        <div class="muted" style="margin-bottom:8px;">Select user in OVERSEER first</div>
+                        <div class="prank-grid" id="monglePrankGrid">
                             <div class="prank-card" onclick="executePrank('shake')"><div class="prank-emoji">🌀</div><div class="prank-name">Shake</div></div>
                             <div class="prank-card" onclick="executePrank('flip')"><div class="prank-emoji">🔄</div><div class="prank-name">Flip</div></div>
-                            <div class="prank-card" onclick="executePrank('rainbow')"><div class="prank-emoji">🌈</div><div class="prank-name">Rainbow</div></div>
-                            <div class="prank-card" onclick="executePrank('matrix')"><div class="prank-emoji">💚</div><div class="prank-name">Matrix</div></div>
                             <div class="prank-card" onclick="executePrank('jumpscare')"><div class="prank-emoji">😱</div><div class="prank-name">Jumpscare</div></div>
-                            <div class="prank-card" onclick="executePrank('rickroll')"><div class="prank-emoji">🎵</div><div class="prank-name">Rick Roll</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-virus')"><div class="prank-emoji">🦠</div><div class="prank-name">Fake Virus</div></div>
-                            <div class="prank-card" onclick="executePrank('alert-spam')"><div class="prank-emoji">💬</div><div class="prank-name">Alerts</div></div>
-                            <div class="prank-card" onclick="executePrank('disco')"><div class="prank-emoji">🕺</div><div class="prank-name">Disco</div></div>
-                            <div class="prank-card" onclick="executePrank('gravity')"><div class="prank-emoji">⬇️</div><div class="prank-name">Gravity</div></div>
-                            <div class="prank-card" onclick="executePrank('glitch')"><div class="prank-emoji">📺</div><div class="prank-name">Glitch</div></div>
-                            <div class="prank-card" onclick="executePrank('spin')"><div class="prank-emoji">🌪️</div><div class="prank-name">Spin</div></div>
-                            <div class="prank-card" onclick="executePrank('blur')"><div class="prank-emoji">😵</div><div class="prank-name">Blur</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-update')"><div class="prank-emoji">💻</div><div class="prank-name">Windows</div></div>
-                            <div class="prank-card" onclick="executePrank('seizure')"><div class="prank-emoji">⚡</div><div class="prank-name">Seizure</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-fbi')"><div class="prank-emoji">🚨</div><div class="prank-name">FBI</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-crash')"><div class="prank-emoji">💥</div><div class="prank-name">Crash</div></div>
-                            <div class="prank-card" onclick="executePrank('comic-sans')"><div class="prank-emoji">😂</div><div class="prank-name">Comic</div></div>
-                            <div class="prank-card" onclick="executePrank('earthquake')"><div class="prank-emoji">🌎</div><div class="prank-name">Quake</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-delete')"><div class="prank-emoji">🗑️</div><div class="prank-name">Delete</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-hacker')"><div class="prank-emoji">💀</div><div class="prank-name">Hacker</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-download')"><div class="prank-emoji">📥</div><div class="prank-name">Download</div></div>
-                            <div class="prank-card" onclick="executePrank('confetti')"><div class="prank-emoji">🎉</div><div class="prank-name">Confetti</div></div>
-                            <div class="prank-card" onclick="executePrank('fire-emoji')"><div class="prank-emoji">🔥</div><div class="prank-name">Fire Rain</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-battery')"><div class="prank-emoji">🔋</div><div class="prank-name">Battery</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-call')"><div class="prank-emoji">📞</div><div class="prank-name">Call</div></div>
-                            <div class="prank-card" onclick="executePrank('snow')"><div class="prank-emoji">❄️</div><div class="prank-name">Snow</div></div>
-                            <div class="prank-card" onclick="executePrank('typewriter')"><div class="prank-emoji">⌨️</div><div class="prank-name">Type</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-notification')"><div class="prank-emoji">🔔</div><div class="prank-name">Notify</div></div>
-                            <div class="prank-card" onclick="executePrank('party-mode')"><div class="prank-emoji">🎊</div><div class="prank-name">Party</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-error')"><div class="prank-emoji">❌</div><div class="prank-name">404</div></div>
-                            <div class="prank-card" onclick="executePrank('upside-down')"><div class="prank-emoji">🙃</div><div class="prank-name">Upside</div></div>
-                            <div class="prank-card" onclick="executePrank('backwards')"><div class="prank-emoji">⬅️</div><div class="prank-name">Mirror</div></div>
-                            <div class="prank-card" onclick="executePrank('invisible')"><div class="prank-emoji">👻</div><div class="prank-name">Invis</div></div>
-                            <div class="prank-card" onclick="executePrank('cursor-trail')"><div class="prank-emoji">✨</div><div class="prank-name">Trail</div></div>
-                            <div class="prank-card" onclick="executePrank('zoom-chaos')"><div class="prank-emoji">🔍</div><div class="prank-name">Zoom</div></div>
-                            <div class="prank-card" onclick="executePrank('slow-motion')"><div class="prank-emoji">🐌</div><div class="prank-name">Slow Mo</div></div>
-                            <div class="prank-card" onclick="executePrank('hide-text')"><div class="prank-emoji">🙈</div><div class="prank-name">No Text</div></div>
-                            <div class="prank-card" onclick="executePrank('invert-colors')"><div class="prank-emoji">🎨</div><div class="prank-name">Invert</div></div>
-                            <div class="prank-card" onclick="executePrank('spiral')"><div class="prank-emoji">🌀</div><div class="prank-name">Spiral</div></div>
-                            <div class="prank-card" onclick="executePrank('bouncing')"><div class="prank-emoji">⚽</div><div class="prank-name">Bounce</div></div>
-                            <div class="prank-card" onclick="executePrank('wavey')"><div class="prank-emoji">🌊</div><div class="prank-name">Wavey</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-shutdown')"><div class="prank-emoji">🔌</div><div class="prank-name">Shutdown</div></div>
-                            <div class="prank-card" onclick="executePrank('skew')"><div class="prank-emoji">📐</div><div class="prank-name">Skew</div></div>
-                            <div class="prank-card" onclick="executePrank('shrink')"><div class="prank-emoji">🔬</div><div class="prank-name">Shrink</div></div>
-                            <div class="prank-card" onclick="executePrank('expand')"><div class="prank-emoji">🔭</div><div class="prank-name">Expand</div></div>
-                            <div class="prank-card" onclick="executePrank('nyan-cat')"><div class="prank-emoji">🐱</div><div class="prank-name">Nyan</div></div>
-                            <!-- NEW v8 PRANKS -->
-                            <div class="prank-card" onclick="executePrank('fake-police')"><div class="prank-emoji">🚔</div><div class="prank-name">Police</div></div>
-                            <div class="prank-card" onclick="executePrank('blackout')"><div class="prank-emoji">⬛</div><div class="prank-name">Blackout</div></div>
-                            <div class="prank-card" onclick="executePrank('white-flash')"><div class="prank-emoji">⬜</div><div class="prank-name">Flash</div></div>
-                            <div class="prank-card" onclick="executePrank('tiny-cursor')"><div class="prank-emoji">🐜</div><div class="prank-name">Tiny</div></div>
-                            <div class="prank-card" onclick="executePrank('big-cursor')"><div class="prank-emoji">🦣</div><div class="prank-name">Bigcursor</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-exam')"><div class="prank-emoji">📝</div><div class="prank-name">Fake Exam</div></div>
-                            <div class="prank-card" onclick="executePrank('screaming')"><div class="prank-emoji">😱</div><div class="prank-name">Scream</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-ad')"><div class="prank-emoji">📢</div><div class="prank-name">Fake Ad</div></div>
-                            <div class="prank-card" onclick="executePrank('pirate-speak')"><div class="prank-emoji">🏴‍☠️</div><div class="prank-name">Pirate</div></div>
-                            <div class="prank-card" onclick="executePrank('mongle-takeover')"><div class="prank-emoji">👑</div><div class="prank-name">Takeover</div></div>
                             <div class="prank-card" onclick="executePrank('fake-teacher')"><div class="prank-emoji">📚</div><div class="prank-name">Teacher</div></div>
+                            <div class="prank-card" onclick="executePrank('fake-wifi')"><div class="prank-emoji">📶</div><div class="prank-name">No WiFi</div></div>
                             <div class="prank-card" onclick="executePrank('fake-suspension')"><div class="prank-emoji">📋</div><div class="prank-name">Suspended</div></div>
                             <div class="prank-card" onclick="executePrank('fake-detention')"><div class="prank-emoji">🏫</div><div class="prank-name">Detention</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-wifi')"><div class="prank-emoji">📶</div><div class="prank-name">No WiFi</div></div>
-                            <div class="prank-card" onclick="executePrank('fake-minecraft')"><div class="prank-emoji">⛏️</div><div class="prank-name">Minecraft</div></div>
                             <div class="prank-card" onclick="executePrank('laser-eyes')"><div class="prank-emoji">👁️</div><div class="prank-name">Laser</div></div>
                             <div class="prank-card" onclick="executePrank('fake-meet')"><div class="prank-emoji">📹</div><div class="prank-name">Meet Call</div></div>
                             <div class="prank-card" onclick="executePrank('school-bell')"><div class="prank-emoji">🔔</div><div class="prank-name">Bell</div></div>
@@ -717,40 +655,20 @@
                             <div class="prank-card" onclick="executePrank('virus-scan')"><div class="prank-emoji">🛡️</div><div class="prank-name">Virus Scan</div></div>
                             <div class="prank-card" onclick="executePrank('tilt-fall')"><div class="prank-emoji">📐</div><div class="prank-name">Tilt Fall</div></div>
                             <div class="prank-card" onclick="executePrank('fake-battery')"><div class="prank-emoji">🪫</div><div class="prank-name">Low Battery</div></div>
+                            <div class="prank-card" onclick="executePrank('fake-minecraft')"><div class="prank-emoji">⛏️</div><div class="prank-name">Minecraft</div></div>
+                            <div class="prank-card" onclick="executePrank('confetti')"><div class="prank-emoji">🎉</div><div class="prank-name">Confetti</div></div>
+                            <div class="prank-card" onclick="executePrank('blackout')"><div class="prank-emoji">⬛</div><div class="prank-name">Blackout</div></div>
+                            <div class="prank-card" onclick="executePrank('matrix')"><div class="prank-emoji">💚</div><div class="prank-name">Matrix</div></div>
+                            <div class="prank-card" onclick="executePrank('disco')"><div class="prank-emoji">🕺</div><div class="prank-name">Disco</div></div>
+                            <div class="prank-card" onclick="executePrank('fake-virus')"><div class="prank-emoji">🦠</div><div class="prank-name">Fake Virus</div></div>
+                            <div class="prank-card" onclick="executePrank('fake-fbi')"><div class="prank-emoji">🚨</div><div class="prank-name">FBI</div></div>
+                            <div class="prank-card" onclick="executePrank('mongle-takeover')"><div class="prank-emoji">👑</div><div class="prank-name">Takeover</div></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- RIGHT -->
                 <div>
                     <div class="mongle-section">
-                        <h4>🌐 GLOBAL CONTROLS</h4>
-                        <label class="muted">Force Theme for Everyone</label>
-                        <select id="globalTheme" class="input" style="margin: 4px 0;">
-                            <option value="">-- Theme --</option>
-                            <option value="mongle">🖤 MONGLE (Default)</option>
-                            <option value="clever">🔵 CLEVER</option>
-                            <option value="canva">🟣 CANVA</option>
-                            <option value="website">⚪ WEBSITE</option>
-                            <option value="halloween">🎃 HALLOWEEN</option>
-                            <option value="christmas">🎄 CHRISTMAS</option>
-                            <option value="aprilfools">🤡 APRIL FOOLS</option>
-                            <option value="valentines">💕 VALENTINES</option>
-                            <option value="cyberpunk">💜 CYBERPUNK</option>
-                            <option value="retro">🟢 RETRO</option>
-                        </select>
-                        <button class="btn btn-warn" onclick="forceGlobalTheme()" style="width:100%; margin-bottom: 8px;">🎨 APPLY TO ALL</button>
-                        <label class="muted">Broadcast Message</label>
-                        <input id="globalMsgInput" class="input" placeholder="Message to all..." style="margin: 4px 0;">
-                        <button class="btn btn-warn" onclick="sendGlobalMessage()" style="width:100%; margin-bottom: 8px;">📢 BROADCAST</button>
-                        <label class="muted">Global Redirect</label>
-                        <input id="globalRedirInput" class="input" placeholder="Redirect URL..." style="margin: 4px 0;">
-                        <button class="btn btn-red" onclick="globalRedirect()" style="width:100%;">↗ REDIRECT ALL</button>
-                    </div>
-
-                    <div class="mongle-section">
-                        <h4>🎯 ACHIEVEMENT MANAGER</h4>
-                        <div class="muted" style="margin-bottom:8px;">Manually award achievements</div>
+                        <h4>🏅 AWARD ACHIEVEMENT</h4>
                         <select id="awardUserSelect" class="input" style="margin:4px 0;"></select>
                         <select id="awardAchSelect" class="input" style="margin:4px 0;">
                             <optgroup label="🏅 Core Awards">
@@ -803,105 +721,218 @@
                                 <option value="game_closed">🎮 Busted</option>
                                 <option value="panic_pressed">😰 Close Call</option>
                                 <option value="screen_shared">📺 Screen Shared</option>
+                                <option value="konami">⬆️ Konami Code</option>
+                                <option value="rickrolled">🎵 Rickrolled</option>
+                                <option value="matrix_mode">💊 Red Pill</option>
+                                <option value="easter_egg">🥚 Easter Egg</option>
+                                <option value="hacker">💻 1337 H4X0R</option>
+                                <option value="time_traveler">⏰ Time Traveler</option>
+                                <option value="cursed">👁️ Cursed</option>
+                                <option value="blessed">✨ Blessed</option>
+                            </optgroup>
+                            <optgroup label="🎉 Gen Z / Meme Awards">
+                                <option value="gyatt">👀 Gyatt</option>
+                                <option value="fanum_tax">🍔 Fanum Tax</option>
+                                <option value="kai_cenat">🎤 Mafiaaaa</option>
+                                <option value="griddy">💃 Hit The Griddy</option>
+                                <option value="ohio_final">🌽 Only In Ohio</option>
+                                <option value="sus">📮 Sussy Baka</option>
+                                <option value="bussin">🍗 Bussin</option>
+                                <option value="deadass">💀 Deadass</option>
+                                <option value="cap_detector">🧢 Cap Detector</option>
+                                <option value="salty">🧂 Salty</option>
+                                <option value="simp">💝 Certified Simp</option>
+                                <option value="down_bad">📉 Down Bad</option>
+                                <option value="big_brain">🧠 Big Brain</option>
+                                <option value="smooth_brain">🫠 Smooth Brain</option>
+                            </optgroup>
+                            <optgroup label="🏆 Event Awards">
+                                <option value="event_winner">🏆 Event Winner</option>
+                                <option value="first_place">🥇 First Place</option>
+                                <option value="second_place">🥈 Second Place</option>
+                                <option value="third_place">🥉 Third Place</option>
+                                <option value="participant">🎗️ Participant</option>
+                                <option value="holiday_2024">🎄 Holiday 2024</option>
+                                <option value="new_year">🎆 New Year</option>
+                                <option value="anniversary">🎂 Anniversary</option>
+                                <option value="beta_tester">🔬 Beta Tester</option>
+                                <option value="alpha_user">🅰️ Alpha User</option>
                             </optgroup>
                         </select>
-                        <button class="btn btn-blue" onclick="awardAchievement()" style="width:100%;">AWARD ACHIEVEMENT</button>
-                    </div>
-
-                    <div class="mongle-section">
-                        <h4>🔥 DANGER ZONE</h4>
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                            <button class="btn btn-red" onclick="nukeAllUsers()">🚫 KICK ALL</button>
-                            <button class="btn btn-warn" onclick="freezeAllUsers()">❄️ FREEZE ALL</button>
-                            <button class="btn btn-warn" onclick="bsodAll()">☠️ BSOD ALL</button>
-                            <button class="btn btn-red" onclick="panicAll()">⚠️ PANIC ALL</button>
-                            <button class="btn btn-warn" onclick="massAwardAll()" style="grid-column:span 2;">🏅 AWARD ALL ONLINE</button>
+                        <div style="display:flex;gap:6px;">
+                            <button class="btn" onclick="awardAchToUser()" style="flex:1;">🏅 AWARD</button>
+                            <button class="btn btn-warn" onclick="massAwardAll()" style="flex:1;">📢 ALL</button>
                         </div>
                     </div>
-
+                    <div class="mongle-section">
+                        <h4>💬 CHAT CONTROLS</h4>
+                        <div style="display:flex;gap:6px;margin-bottom:8px;">
+                            <button class="btn btn-dark" id="muteChatBtn" onclick="toggleChatMute()" style="flex:1;">🔇 MUTE ALL</button>
+                            <button class="btn btn-dark" onclick="clearChat()" style="flex:1;">🗑️ CLEAR</button>
+                        </div>
+                        <label style="font-size:10px;color:#555;letter-spacing:1px;">SLOW MODE (seconds)</label>
+                        <div style="display:flex;gap:6px;margin-top:4px;">
+                            <input id="slowModeVal" type="number" class="input" min="0" max="300" value="0" style="margin:0;width:70px;">
+                            <button class="btn" onclick="setSlowMode()" style="flex:1;">SET</button>
+                        </div>
+                        <div id="slowModeStatus" style="font-size:10px;color:#555;margin-top:4px;"></div>
+                    </div>
                     <div class="mongle-section">
                         <h4>📝 USER NOTES</h4>
-                        <div class="muted" style="margin-bottom:6px;">Private notes about users (stored locally)</div>
-                        <select id="noteUserSel" class="input" style="margin:4px 0;" onchange="loadUserNote()">
-                            <option value="">-- Select user --</option>
+                        <select id="noteUserSel" class="input" style="margin:4px 0;" onchange="loadUserNote()"></select>
+                        <textarea id="noteText" class="input" style="margin:4px 0; height:70px; resize:none;" placeholder="Notes about this user..."></textarea>
+                        <button class="btn btn-dark" onclick="saveUserNote()" style="width:100%;">SAVE NOTE</button>
+                        <div id="notesList" style="margin-top:8px; max-height:100px; overflow-y:auto;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ROW 2: More MONGLE Features -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; margin-top: 14px; border-top: 1px solid #1c1c1c; padding-top: 14px;">
+                <div class="mongle-section">
+                    <h4>🎯 QUICK ACTIONS</h4>
+                    <div style="display:grid; gap:6px;">
+                        <button class="btn btn-warn" onclick="massAwardAchievement('touched_grass')" style="font-size:10px;">🌱 Touch Grass All</button>
+                        <button class="btn btn-purple" onclick="massAwardAchievement('mongle_legend')" style="font-size:10px;">👑 Legend All</button>
+                        <button class="btn btn-red" onclick="massKickAll()" style="font-size:10px;">🚫 Kick Everyone</button>
+                        <button class="btn btn-dark" onclick="resetAllStats()" style="font-size:10px;">🔄 Reset Stats</button>
+                        <button class="btn" onclick="healAllUsers()" style="font-size:10px;">💚 Heal All</button>
+                    </div>
+                </div>
+                <div class="mongle-section">
+                    <h4>📊 ANALYTICS</h4>
+                    <div style="display:grid; gap:4px; font-size:11px;">
+                        <div style="display:flex;justify-content:space-between;padding:4px;background:#111;border-radius:4px;">
+                            <span>Peak Users Today</span>
+                            <span id="peakUsers" style="color:var(--primary);">0</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:4px;background:#111;border-radius:4px;">
+                            <span>Total Sessions</span>
+                            <span id="totalSessions" style="color:var(--primary);">0</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:4px;background:#111;border-radius:4px;">
+                            <span>Avg Session Time</span>
+                            <span id="avgSessionTime" style="color:var(--primary);">0m</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:4px;background:#111;border-radius:4px;">
+                            <span>Games This Hour</span>
+                            <span id="gamesThisHour" style="color:var(--primary);">0</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-dark" onclick="refreshAnalytics()" style="width:100%;margin-top:6px;font-size:9px;">REFRESH</button>
+                </div>
+                <div class="mongle-section">
+                    <h4>🔧 SYSTEM TOOLS</h4>
+                    <div style="display:grid; gap:6px;">
+                        <button class="btn btn-dark" onclick="exportUserData()" style="font-size:10px;">📤 Export Data</button>
+                        <button class="btn btn-dark" onclick="importUserData()" style="font-size:10px;">📥 Import Data</button>
+                        <button class="btn btn-warn" onclick="clearAllCache()" style="font-size:10px;">🗑️ Clear Cache</button>
+                        <button class="btn btn-dark" onclick="viewSystemLogs()" style="font-size:10px;">📋 View Logs</button>
+                        <button class="btn btn-red" onclick="emergencyShutdown()" style="font-size:10px;">🚨 Emergency</button>
+                    </div>
+                </div>
+                <div class="mongle-section">
+                    <h4>🎨 SITE THEMES</h4>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4px;">
+                        <button class="btn btn-dark" onclick="setGlobalTheme('matrix')" style="font-size:9px;padding:4px;">💚 Matrix</button>
+                        <button class="btn btn-dark" onclick="setGlobalTheme('cyberpunk')" style="font-size:9px;padding:4px;">💜 Cyber</button>
+                        <button class="btn btn-dark" onclick="setGlobalTheme('blood')" style="font-size:9px;padding:4px;">🔴 Blood</button>
+                        <button class="btn btn-dark" onclick="setGlobalTheme('ice')" style="font-size:9px;padding:4px;">🧊 Ice</button>
+                        <button class="btn btn-dark" onclick="setGlobalTheme('gold')" style="font-size:9px;padding:4px;">🥇 Gold</button>
+                        <button class="btn btn-dark" onclick="setGlobalTheme('rainbow')" style="font-size:9px;padding:4px;">🌈 Rainbow</button>
+                    </div>
+                    <hr style="border-color:#111;margin:8px 0;">
+                    <label style="font-size:9px;color:#555;">CUSTOM PRIMARY COLOR</label>
+                    <div style="display:flex;gap:4px;margin-top:4px;">
+                        <input type="color" id="customThemeColor" value="#00ff41" style="width:40px;height:28px;border:none;cursor:pointer;">
+                        <button class="btn" onclick="applyCustomTheme()" style="flex:1;font-size:9px;">APPLY</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ROW 3: Event Controls & Specials -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; border-top: 1px solid #1c1c1c; padding-top: 14px;">
+                <div class="mongle-section">
+                    <h4>🎪 EVENT MODE</h4>
+                    <div style="display:flex;gap:6px;margin-bottom:8px;">
+                        <input id="eventName" class="input" style="margin:0;flex:1;" placeholder="Event name...">
+                        <input type="color" id="eventColor" value="#ff00ff" style="width:36px;height:36px;border:none;cursor:pointer;">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:8px;">
+                        <button class="btn" onclick="startEvent()" style="font-size:10px;">🎉 START EVENT</button>
+                        <button class="btn btn-red" onclick="stopEvent()" style="font-size:10px;">🛑 STOP EVENT</button>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                        <button class="btn btn-dark" onclick="setEventPreset('double_xp')" style="font-size:8px;padding:3px 6px;">2X XP</button>
+                        <button class="btn btn-dark" onclick="setEventPreset('free_achievements')" style="font-size:8px;padding:3px 6px;">FREE ACH</button>
+                        <button class="btn btn-dark" onclick="setEventPreset('party')" style="font-size:8px;padding:3px 6px;">PARTY</button>
+                        <button class="btn btn-dark" onclick="setEventPreset('chaos')" style="font-size:8px;padding:3px 6px;">CHAOS</button>
+                        <button class="btn btn-dark" onclick="setEventPreset('chill')" style="font-size:8px;padding:3px 6px;">CHILL</button>
+                    </div>
+                </div>
+                <div class="mongle-section">
+                    <h4>📣 ANNOUNCEMENT</h4>
+                    <textarea id="announcementText" class="input" style="margin:4px 0;height:50px;resize:none;" placeholder="Write announcement..."></textarea>
+                    <div style="display:flex;gap:4px;margin-bottom:6px;">
+                        <select id="announcementType" class="input" style="margin:0;flex:1;">
+                            <option value="info">ℹ️ Info</option>
+                            <option value="warning">⚠️ Warning</option>
+                            <option value="success">✅ Success</option>
+                            <option value="error">🚨 Alert</option>
+                            <option value="special">✨ Special</option>
                         </select>
-                        <textarea id="noteTextArea" class="input" placeholder="Write a note about this user..." style="margin:4px 0; height:70px; resize:vertical; font-family:monospace; font-size:11px;"></textarea>
-                        <div style="display:flex; gap:6px;">
-                            <button class="btn btn-dark" onclick="saveUserNote()" style="flex:1;">💾 SAVE NOTE</button>
-                            <button class="btn btn-red" onclick="deleteUserNote()" style="flex:1;">🗑️ DELETE</button>
-                        </div>
-                        <div id="notesList" style="margin-top:8px; max-height:80px; overflow-y:auto; font-size:10px; color:#555;"></div>
+                        <input type="number" id="announcementDuration" class="input" style="margin:0;width:60px;" value="10" min="5" max="60">
+                        <span style="font-size:10px;color:#555;align-self:center;">sec</span>
                     </div>
-
-                    <div class="mongle-section">
-                        <h4>⏱️ SESSION TIMER</h4>
-                        <div class="muted" style="margin-bottom:6px;">Auto-kick users after time limit</div>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <input id="sessionTimerMins" class="input" type="number" placeholder="Minutes" style="margin:0; width:80px;">
-                            <button class="btn btn-warn" onclick="setSessionTimer()" style="flex:1;">SET TIMER</button>
-                            <button class="btn btn-dark" onclick="clearSessionTimer()" style="flex:1;">CLEAR</button>
-                        </div>
-                        <div id="sessionTimerStatus" style="font-size:10px; color:#555; margin-top:4px;"></div>
-                    </div>
-
-                    <div class="mongle-section">
-                        <h4>📊 DATABASE</h4>
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <button class="btn btn-dark" onclick="exportAllData()">📥 EXPORT DATA</button>
-                            <button class="btn btn-warn" onclick="clearUpdates()">🗑️ CLEAR UPDATES</button>
-                            <button class="btn btn-red" onclick="clearAllData()">☢️ NUKE ALL DATA</button>
-                        </div>
-                    </div>
-
-                    <div class="mongle-section">
-                        <h4>📢 POST ANNOUNCEMENT</h4>
-                        <input id="adminUpdateInp2" class="input" placeholder="Write announcement..." style="margin:4px 0;">
-                        <button class="btn btn-warn" onclick="adminAddUpdateFromMongle()" style="width:100%;">POST</button>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                        <button class="btn" onclick="sendAnnouncement()" style="font-size:10px;">📢 SEND</button>
+                        <button class="btn btn-dark" onclick="clearAnnouncement()" style="font-size:10px;">🗑️ CLEAR</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Regular Admin -->
-        <div class="admin-layout">
-            <!-- LEFT: user list -->
-            <div style="display:flex; flex-direction:column; gap:8px; width:260px; flex-shrink:0;">
-                <div style="display:flex; gap:6px; align-items:center;">
-                    <span style="font-size:10px; color:#555; letter-spacing:1px;">ONLINE</span>
-                    <span id="userCount" style="font-size:10px; color:var(--primary);">0</span>
-                    <button class="btn btn-dark" onclick="refreshPresence()" style="margin-left:auto; padding:3px 8px; font-size:9px;">↻</button>
+        <!-- MAIN OVERSEER LAYOUT -->
+        <div style="display:grid; grid-template-columns:260px 1fr; gap:12px; min-height:500px;">
+            <!-- USER LIST SIDEBAR -->
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;gap:6px;">
+                    <input type="text" id="adminSearchUser" class="input" style="margin:0;flex:1;" placeholder="Filter users..." oninput="filterUserList()">
+                    <button class="btn btn-dark" onclick="refreshPresence()" style="padding:6px 8px;">↻</button>
                 </div>
-                <div class="u-sidebar" id="userList" style="flex:1; min-height:300px;"></div>
-                <input id="adminSearchUser" class="input" placeholder="Filter users..." oninput="filterUserList()" style="margin:0;">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
+                    <button class="btn btn-warn" onclick="massAction('freeze')" style="font-size:9px;padding:4px;">❄️ ALL</button>
+                    <button class="btn btn-red" onclick="massAction('kick')" style="font-size:9px;padding:4px;">🚫 ALL</button>
+                    <button class="btn" onclick="massAction('prank')" style="font-size:9px;padding:4px;">😈 ALL</button>
+                </div>
+                <div class="u-sidebar" id="userList" style="flex:1; min-height:300px; overflow-y:auto;"></div>
             </div>
 
-            <!-- RIGHT: tabbed panel -->
-            <div style="flex:1; display:flex; flex-direction:column; gap:0; min-width:0;">
-
-                <!-- Tab bar -->
-                <div style="display:flex; border-bottom:1px solid #1c1c1c; margin-bottom:10px;">
+            <!-- RIGHT PANEL WITH TABS -->
+            <div style="display:flex; flex-direction:column; min-width:0;">
+                <div style="display:flex; border-bottom:1px solid #1c1c1c; margin-bottom:10px; gap:2px; flex-wrap:wrap;">
                     <div class="lb-tab active" id="atab-intel" onclick="switchAdminTab('intel')" style="font-size:11px;">🔍 INTEL</div>
-                    <div class="lb-tab" id="atab-games" onclick="switchAdminTab('games')" style="font-size:11px;">🎮 GAME TABS</div>
+                    <div class="lb-tab" id="atab-games" onclick="switchAdminTab('games')" style="font-size:11px;">🎮 GAMES</div>
                     <div class="lb-tab" id="atab-actions" onclick="switchAdminTab('actions')" style="font-size:11px;">⚡ ACTIONS</div>
+                    <div class="lb-tab" id="atab-mass" onclick="switchAdminTab('mass')" style="font-size:11px;">💣 MASS</div>
                     <div class="lb-tab" id="atab-broadcast" onclick="switchAdminTab('broadcast')" style="font-size:11px;">📢 BROADCAST</div>
                 </div>
 
                 <!-- INTEL TAB -->
                 <div id="apanel-intel" style="display:flex; flex-direction:column; gap:8px;">
                     <div id="dossier" class="info-grid">Select a user to view intel...</div>
-                    <div id="preview" style="height:220px;border:1px solid #1c1c1c;border-radius:4px;background:#000 center/cover no-repeat;position:relative;">
+                    <div id="preview" style="height:200px;border:1px solid #1c1c1c;border-radius:4px;background:#000 center/cover no-repeat;position:relative;">
                         <div id="live-indicator" style="position:absolute;top:8px;right:8px;background:red;color:white;padding:3px 8px;border-radius:3px;font-size:9px;display:none;animation:blink 1s infinite;">● LIVE</div>
-                        <div id="previewEmpty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#333;font-size:11px;text-align:center;pointer-events:none;">Select a user to see their live screen<br><span style="font-size:9px;color:#222;margin-top:4px;display:block;">auto-starts when they open a game in embed mode</span></div>
+                        <div id="previewEmpty" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#333;font-size:11px;text-align:center;pointer-events:none;">Select a user to see their live screen</div>
                     </div>
                     <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:6px;">
-                        <button class="btn" onclick="adminAct('capReq')">📸 SCREEN</button>
+                        <button class="btn" onclick="adminAct('capReq')">📸 SNAP</button>
                         <button class="btn" onclick="adminAct('camReq')">🎥 CAM</button>
                         <button class="btn" onclick="adminAct('gpsReq')">📍 GPS</button>
                         <button class="btn" id="watchBtn" style="background:#004400; color:white;" onclick="toggleWatch()">👁️ WATCH</button>
-                        <button class="btn btn-dark" onclick="tagComputerId()">🏷️ TAG ID</button>
+                        <button class="btn btn-dark" onclick="tagComputerId()">🏷️ TAG</button>
                     </div>
                 </div>
-
 
                 <!-- GAME TABS TAB -->
                 <div id="apanel-games" style="display:none; flex-direction:column; gap:8px;">
@@ -909,17 +940,13 @@
                         <span style="font-size:11px; color:#00cfff; letter-spacing:1px;">ACTIVE GAME SESSIONS</span>
                         <span id="gameTabCount" style="font-size:10px; color:#555;">(0 active)</span>
                     </div>
-                    <div id="gameTabList" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:6px; min-height:80px;">
-                        <div class="gtab-empty">No users have games open right now.</div>
-                    </div>
-                    <!-- Bulk actions -->
+                    <div id="gameTabList" style="overflow-y:auto; display:flex; flex-direction:column; gap:6px; min-height:60px; max-height:180px;"></div>
                     <div style="border-top:1px solid #1c1c1c; padding-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
-                        <select id="gameTabUserSel" class="input" style="margin:0; flex:1; font-size:10px; min-width:120px;"><option value="">-- Select user --</option></select>
-                        <button class="btn btn-red" onclick="adminCloseGame()" title="Force-close game">✖ CLOSE</button>
-                        <button class="btn btn-warn" onclick="adminDisableGame()" title="Disable (prank)">🚫 DISABLE</button>
-                        <button class="btn btn-dark" onclick="adminGameMsg()" title="Alert user">📢 ALERT</button>
+                        <select id="gameTabUserSel" class="input" style="margin:0; flex:1; font-size:10px;"><option value="">-- Select user --</option></select>
+                        <button class="btn btn-red" onclick="adminCloseGame()">✖ CLOSE</button>
+                        <button class="btn btn-warn" onclick="adminDisableGame()">🚫 DISABLE</button>
+                        <button class="btn btn-dark" onclick="adminGameMsg()">📢 ALERT</button>
                     </div>
-                    <!-- Activity Feed -->
                     <div style="border-top:1px solid #1c1c1c; padding-top:8px;">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
                             <div style="font-size:10px; color:#555; letter-spacing:1px;">⚡ LIVE ACTIVITY FEED</div>
@@ -928,7 +955,7 @@
                                 <button class="btn btn-dark" id="feedPauseBtn" onclick="toggleFeedPause()" style="font-size:9px;padding:2px 6px;">PAUSE</button>
                             </div>
                         </div>
-                        <div id="activityFeed" style="height:220px;overflow-y:auto;background:#030303;border:1px solid #1c1c1c;border-radius:4px;padding:6px;font-size:10px;font-family:monospace;"></div>
+                        <div id="activityFeed" style="height:160px;overflow-y:auto;background:#030303;border:1px solid #1c1c1c;border-radius:4px;padding:6px;font-size:10px;font-family:monospace;"></div>
                         <div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">
                             <button class="btn btn-dark" onclick="filterFeed('all')" id="filt-all" style="font-size:9px;padding:2px 6px;background:#1a1a1a;">ALL</button>
                             <button class="btn btn-dark" onclick="filterFeed('game')" id="filt-game" style="font-size:9px;padding:2px 6px;">🎮</button>
@@ -942,32 +969,90 @@
 
                 <!-- ACTIONS TAB -->
                 <div id="apanel-actions" style="display:none; flex-direction:column; gap:8px;">
-                    <div style="font-size:10px; color:#555; letter-spacing:1px; margin-bottom:2px;">SELECT A USER FIRST, THEN USE ACTIONS BELOW</div>
+                    <div style="font-size:10px; color:#555; letter-spacing:1px; margin-bottom:2px;">TARGET: <span id="actionTargetName" style="color:var(--primary);">none selected</span></div>
                     <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
-                        <button class="btn" style="background:purple; color:white;" onclick="adminAct('reload')">↻ RELOAD</button>
+                        <button class="btn" style="background:#5500aa;" onclick="adminAct('reload')">↻ RELOAD</button>
                         <button class="btn btn-warn" onclick="adminAct('frozen')">❄️ FREEZE</button>
                         <button class="btn btn-warn" onclick="adminAct('bsod')">☠️ BSOD</button>
                         <button class="btn btn-warn" onclick="adminAct('print')">🖨️ PRINT</button>
                         <button class="btn btn-warn" onclick="adminAct('vibrate')">📳 VIBE</button>
                         <button class="btn btn-red" onclick="adminAct('kicked')">🚫 KICK</button>
                         <button class="btn btn-dark" onclick="adminCloseGameFor(selectedID)" style="grid-column:span 2;">🎮 CLOSE GAME</button>
+                        <button class="btn btn-dark" onclick="muteUser()" style="grid-column:span 2;">🔇 MUTE USER</button>
                     </div>
                     <div style="display:flex; gap:6px; margin-top:4px;">
-                        <input type="text" id="adminCommandInp" class="input" style="margin:0;" placeholder="Message / URL / Speak Text...">
+                        <input type="text" id="adminCommandInp" class="input" style="margin:0;" placeholder="Message / URL / Speak text...">
                         <button class="btn" onclick="adminCustom('msg')">MSG</button>
                         <button class="btn" onclick="adminCustom('speak')">🗣️</button>
-                        <button class="btn" onclick="adminCustom('redir')">REDIR</button>
+                        <button class="btn" onclick="adminCustom('redir')">↗</button>
                         <button class="btn" onclick="adminCustom('openTab')">TAB</button>
                     </div>
-                    <div id="adminErrorLog" style="max-height:100px; overflow-y:auto; background:#030303; border:1px solid #2b1f1f; padding:8px; color:#f7b7b7; font-size:11px; border-radius:4px;">No errors yet.</div>
+                    <div id="adminErrorLog" style="max-height:80px; overflow-y:auto; background:#030303; border:1px solid #2b1f1f; padding:8px; color:#f7b7b7; font-size:11px; border-radius:4px;">No errors yet.</div>
                     <button class="btn btn-dark" onclick="clearErrorLog()" style="font-size:9px; padding:3px 8px; align-self:flex-end;">CLEAR LOG</button>
+                </div>
+
+                <!-- MASS ACTIONS TAB -->
+                <div id="apanel-mass" style="display:none; flex-direction:column; gap:10px;">
+                    <div style="font-size:10px;color:#ff4757;letter-spacing:1px;padding:6px 8px;background:#1a0000;border:1px solid #ff475722;border-radius:4px;">⚠️ These actions affect ALL online users</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <button class="btn btn-warn" onclick="massAction('freeze')" style="padding:10px;">❄️ FREEZE ALL</button>
+                        <button class="btn btn-warn" onclick="massAction('unfreeze')" style="padding:10px;">🔓 UNFREEZE ALL</button>
+                        <button class="btn btn-warn" onclick="massAction('bsod')" style="padding:10px;">☠️ BSOD ALL</button>
+                        <button class="btn" onclick="massAction('reload')" style="padding:10px;background:#5500aa;">↻ RELOAD ALL</button>
+                        <button class="btn btn-red" onclick="massAction('kick')" style="padding:10px;">🚫 KICK ALL</button>
+                        <button class="btn btn-dark" onclick="massAction('closeGame')" style="padding:10px;">🎮 CLOSE ALL GAMES</button>
+                    </div>
+                    <div style="border-top:1px solid #1c1c1c;padding-top:8px;">
+                        <div style="font-size:10px;color:#555;letter-spacing:1px;margin-bottom:6px;">MASS PRANK</div>
+                        <select id="massPrankSelect" class="input" style="margin:0 0 8px;">
+                            <option value="shake">🌀 Shake</option>
+                            <option value="jumpscare">😱 Jumpscare</option>
+                            <option value="fake-teacher">📚 Teacher Alert</option>
+                            <option value="fake-wifi">📶 No WiFi</option>
+                            <option value="fake-suspension">📋 Suspension</option>
+                            <option value="laser-eyes">👁️ Laser Eyes</option>
+                            <option value="matrix">💚 Matrix</option>
+                            <option value="confetti">🎉 Confetti</option>
+                            <option value="disco">🕺 Disco</option>
+                            <option value="blackout">⬛ Blackout</option>
+                        </select>
+                        <button class="btn btn-warn" onclick="massAction('prank')" style="width:100%;padding:10px;">😈 PRANK EVERYONE</button>
+                    </div>
+                    <div style="border-top:1px solid #1c1c1c;padding-top:8px;">
+                        <div style="font-size:10px;color:#555;letter-spacing:1px;margin-bottom:6px;">MASS MESSAGE</div>
+                        <input id="massMsgInp" class="input" placeholder="Message to send to all users..." style="margin:0 0 8px;">
+                        <button class="btn" onclick="massAction('msg')" style="width:100%;">📢 SEND TO ALL</button>
+                    </div>
+                    <div style="border-top:1px solid #1c1c1c;padding-top:8px;">
+                        <div style="font-size:10px;color:#555;letter-spacing:1px;margin-bottom:6px;">SCHEDULED PRANK</div>
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <select id="schedPrankSelect" class="input" style="margin:0;flex:1;">
+                                <option value="shake">🌀 Shake</option>
+                                <option value="jumpscare">😱 Jumpscare</option>
+                                <option value="fake-teacher">📚 Teacher Alert</option>
+                                <option value="fake-wifi">📶 No WiFi</option>
+                                <option value="laser-eyes">👁️ Laser Eyes</option>
+                                <option value="confetti">🎉 Confetti</option>
+                                <option value="blackout">⬛ Blackout</option>
+                            </select>
+                            <select id="schedPrankDelay" class="input" style="margin:0;width:90px;">
+                                <option value="10">10s</option>
+                                <option value="30">30s</option>
+                                <option value="60">1 min</option>
+                                <option value="120">2 min</option>
+                                <option value="300">5 min</option>
+                            </select>
+                            <button class="btn btn-warn" onclick="schedulePrank()">⏱ SET</button>
+                        </div>
+                        <div id="scheduledPrankStatus" style="font-size:10px;color:#555;margin-top:4px;"></div>
+                    </div>
                 </div>
 
                 <!-- BROADCAST TAB -->
                 <div id="apanel-broadcast" style="display:none; flex-direction:column; gap:8px;">
                     <div style="font-size:10px; color:#555; letter-spacing:1px;">POST ANNOUNCEMENT TO ALL USERS</div>
                     <input id="adminUpdateInp" class="input" placeholder="Write announcement..." style="margin:0;">
-                    <button class="btn btn-warn" onclick="adminAddUpdate()" style="align-self:flex-start; padding:8px 20px;">POST UPDATE</button>
+                    <button class="btn btn-warn" onclick="adminAddUpdate()" style="align-self:flex-start; padding:8px 20px;">📢 POST</button>
                     <div style="border-top:1px solid #1c1c1c; padding-top:8px; font-size:10px; color:#555; letter-spacing:1px;">RECENT UPDATES</div>
                     <div id="recentUpdatesAdmin" style="max-height:200px; overflow-y:auto; background:#030303; border:1px solid #1c1c1c; padding:8px; border-radius:4px; font-size:11px; color:#888;">Loading...</div>
                 </div>
@@ -975,7 +1060,7 @@
             </div>
         </div>
     </div>
-
+    </div>
     <!-- REQUEST GAME MODAL -->
     <div id="requestGameM" class="modal" style="width:420px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
@@ -1289,6 +1374,7 @@
         const db = getDatabase(app);
 
         let userRef, myID, myName, selectedID, isAdmin = false, isMongle = false, gameData = [];
+        let pinnedGames = JSON.parse(localStorage.getItem('pinnedGames') || '[]');
         let chatMuted = false, slowModeSeconds = 0;
         let activeGameWindow = null, watchInterval = null, tempKey, presenceSnapshot = {}, allData = {};
 
@@ -2141,6 +2227,8 @@
         // ================================
         // ACHIEVEMENT AWARD (MONGLE)
         // ================================
+
+
         window.awardAchievement = () => {
             if (!isMongle) return alert('MONGLE access required.');
             const userSel = document.getElementById('awardUserSelect');
@@ -2459,10 +2547,9 @@
             try { const r = await fetch('https://ipapi.co/json/'); if(r.ok) ipInfo = await r.json(); } catch(e){}
             const bat = await navigator.getBattery?.().catch(() => ({}));
 
-            // Use a per-TAB session ID so same computer can be tested in multiple tabs
-            // Real users on different computers will still get one slot each (COMPUTER_ID based)
-            const TAB_ID = sessionStorage.getItem('tabId') || (() => { const id = COMPUTER_ID + '_' + Math.random().toString(36).slice(2,6); sessionStorage.setItem('tabId', id); return id; })();
-            myID = TAB_ID;
+            // Use COMPUTER_ID so each physical device = exactly 1 slot in Firebase
+            // This prevents the same person appearing as 2-3 users when opening multiple tabs
+            myID = COMPUTER_ID;
             userRef = ref(db, `presence/${myID}`);
             await set(userRef, {
                 name: myName, activity: 'Browsing', joined: new Date().toISOString(),
@@ -2670,9 +2757,11 @@
                 startOverseer(); 
                 startGameTabMonitor();
                 document.getElementById('adminBtn').style.display = 'inline-block';
+                if (document.getElementById('adminBtn2')) document.getElementById('adminBtn2').style.display = 'inline-block';
             }
             if (isMongle) {
                 document.getElementById('mongleAdminBtn').style.display = 'inline-block';
+                if (document.getElementById('mongleAdminBtn2')) document.getElementById('mongleAdminBtn2').style.display = 'inline-block';
             }
             document.getElementById('adminUpdateControls').style.display = isAdmin ? 'block' : 'none';
             fetchUpdates();
@@ -4415,8 +4504,6 @@
         };
 
         // ── PINNED GAMES ──
-        let pinnedGames = JSON.parse(localStorage.getItem('pinnedGames') || '[]');
-
         function savePinnedGames() {
             localStorage.setItem('pinnedGames', JSON.stringify(pinnedGames));
             set(ref(db, 'pinnedGames'), pinnedGames.length > 0 ? pinnedGames : null);
